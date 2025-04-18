@@ -1,0 +1,28 @@
+name: Run Telegram News Bot Every Hour
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # запускается каждый час
+  workflow_dispatch:      # чтобы ты мог запускать вручную
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонировать репозиторий
+        uses: actions/checkout@v3
+
+      - name: Установить Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Установить зависимости
+        run: npm install
+
+      - name: Запустить бота
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: npm start
